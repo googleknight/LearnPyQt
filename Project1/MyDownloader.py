@@ -3,7 +3,7 @@ import urllib.request
 
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
-
+from threading import Thread
 
 class MyDownloader(QDialog):
     def __init__(self):
@@ -33,8 +33,12 @@ class MyDownloader(QDialog):
         self.setFocus()
         self.setMinimumSize(250, 100)
 
-        download.clicked.connect(self.download)
+        download.clicked.connect(self.download_thread)
         browse.clicked.connect(self.browse_file)
+
+    def download_thread(self):
+        t=Thread(target=self.download)
+        t.start()
 
     def browse_file(self):
         save_file = QFileDialog.getSaveFileName(self, caption="Save File As", directory=".", filter="All Files (*.*)")
